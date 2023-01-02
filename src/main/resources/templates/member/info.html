@@ -31,8 +31,6 @@
   <a href="/member/info">회원 정보 수정</a>
   |
   <a href="/member/password">비밀번호 변경</a>
-  |
-  <a href="/member/takecourse">내 수강 목록</a>
   <hr/>
 </div>
 
@@ -44,23 +42,23 @@
       <tr>
         <th>아이디(이메일)</th>
         <td>
-          <p th:text="${detail.userId}">아이디</p>
+          <p th:text="${detail.getEmail()}">아이디</p>
         </td>
       </tr>
       <tr>
         <th>이름</th>
         <td>
-          <p th:text="${detail.userName}">이름</p>
+          <p th:text="${detail.getName()}">이름</p>
         </td>
       </tr>
       <tr>
         <th>전화번호</th>
         <td>
-          <input name="phone" type="text" th:value="${detail.phone}"/>
+          <input name="phone" type="text" th:value="${detail.getPhoneNumber()}"/>
         </td>
       </tr>
 
-      <tr>
+      <!--<tr>
         <th>주소</th>
         <td>
           <div>
@@ -75,18 +73,18 @@
                    placeholder="주소 상세내용 입력"/>
           </div>
         </td>
-      </tr>
+      </tr>-->
 
       <tr>
         <th>가입일</th>
         <td>
-          <p th:text="${detail.regDtText}">전화번호</p>
+          <p th:text="${detail.regDtText}">가입</p>
         </td>
       </tr>
       <tr>
         <th>회원정보 수정일</th>
         <td>
-          <p th:text="${detail.udtDtText}">전화번호</p>
+          <p th:text="${detail.udtDtText}">수정</p>
         </td>
       </tr>
       </tbody>

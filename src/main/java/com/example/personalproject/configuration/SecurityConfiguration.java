@@ -4,6 +4,7 @@ import com.example.personalproject.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,17 +46,13 @@ public class SecurityConfiguration {
 				, "/member/email-auth"
 				, "/member/find-password"
 				, "/member/reset/password"
+				, "/member/login"
 			)
 			.permitAll();
 
 		http.authorizeHttpRequests()
 			.antMatchers("/admin/**")
 			.hasAuthority("ROLE_ADMIN");
-
-		http.formLogin()
-			.loginPage("/member/login")
-			.failureHandler(getFailureHandler())
-			.permitAll();
 
 		http.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
@@ -67,6 +64,5 @@ public class SecurityConfiguration {
 
 		return http.build();
 	}
-
 
 }

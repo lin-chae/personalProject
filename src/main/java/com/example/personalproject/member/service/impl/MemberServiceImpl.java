@@ -22,8 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
 @Service
@@ -110,20 +108,20 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-		Optional<Member> optionalMember = memberRepository.findByEmail(email);
-		if (!optionalMember.isPresent()) {
-			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+	public String login(MemberInput parameter) {
+		Optional<Member> optionalMember = memberRepository.findByEmail(parameter.getEmail());
+		if(optionalMember.isEmpty()){
+			return "회원 정보가 존재하지 않습니다.";
 		}
-
 		Member member = optionalMember.get();
 		switch (member.getUserStatus()) {
-			case REQ -> throw new MemberNotEmailAuthException("이메일 활성화 이후에 로그인을 해주세요.");
-			case STOP -> throw new MemberStopUserException("정지된 회원 입니다.");
-			case WITHDRAW -> throw new MemberStopUserException("탈퇴된 회원 입니다.");
+			case REQ : return "이메일 활성화 이후에 로그인을 해주세요.";
+			case STOP : return "정지된 회원 입니다.";
+			case WITHDRAW : return "탈퇴된 회원 입니다.";
 		}
-
+		if(!BCrypt.checkpw(parameter.getPassword(),member.getPassword())){
+			return "로그인 실패";
+		}
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -132,6 +130,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		memberRepository.save(member);
-		return new User(member.getEmail(), member.getPassword(), grantedAuthorities);
+		return " ";
 	}
 }

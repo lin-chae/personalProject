@@ -1,7 +1,9 @@
 package com.example.personalproject.member.controller;
 
+import com.example.personalproject.MemberDto;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.service.MemberService;
+import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,19 @@ public class MemberController {
 
 	@RequestMapping("/member/login")
 	public String login() {
+
+		return "member/login";
+	}
+
+	@PostMapping("/member/login")
+	public String loginSubmit(Model model, HttpServletRequest request
+		, MemberInput parameter) {
+
+		String result = memberService.login(parameter);
+		if (result.equals(" ")){
+			return "member/info";
+		}
+		model.addAttribute("result", result);
 
 		return "member/login";
 	}
@@ -63,6 +78,17 @@ public class MemberController {
 		model.addAttribute("result", result);
 
 		return "member/email_auth";
+	}
+
+	@GetMapping("/member/info")
+	public String memberInfo(Model model, Principal principal) {
+
+		String userEmail = principal.getName();
+		MemberDto detail = memberService.detail(userEmail);
+
+		model.addAttribute("detail", detail);
+
+		return "member/info";
 	}
 /*
     @GetMapping("/member/reset/password")
