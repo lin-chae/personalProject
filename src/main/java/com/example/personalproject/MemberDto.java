@@ -16,43 +16,43 @@ import lombok.NoArgsConstructor;
 @Data
 public class MemberDto {
 
-	Long user_Id;
+	Long userId;
 	String email;
 	String name;
 	String password;
 	String phoneNumber;
 	boolean emailVerified;
-	LocalDateTime registration_date;
-	LocalDateTime update_date;//회원정보 수정일
+	LocalDateTime registrationDate;
+	LocalDateTime updateDate;//회원정보 수정일
 	boolean adminVerified;
-	UserStatus user_status;
+	UserStatus userStatus;
 	String emailAuthenticationKey;
 
 
 	public static MemberDto of(Member member) {
 
 		return MemberDto.builder()
-			.user_Id(member.getUserId())
+			.userId(member.getUserId())
 			.name(member.getName())
 			.phoneNumber(member.getPhoneNumber())
 			.password(member.getPassword())
-			.registration_date(member.getRegistrationDate())
-			.update_date(member.getUpdateDate())
+			.registrationDate(member.getRegistrationDate())
+			.updateDate(member.getUpdateDate())
 			.emailVerified(member.isEmailVerified())
 			.emailAuthenticationKey(member.getEmailAuthenticationKey())
 			.adminVerified(member.isAdminVerified())
-			.user_status(member.getUserStatus())
+			.userStatus(member.getUserStatus())
 			.build();
 	}
 
 	public String getRegDtText() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-		return registration_date != null ? registration_date.format(formatter) : "";
+		return registrationDate != null ? registrationDate.format(formatter) : "";
 	}
 
 	public String getUdtDtText() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-		return update_date != null ? update_date.format(formatter) : "";
+		return updateDate != null ? updateDate.format(formatter) : "";
 	}
 
 }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -60,10 +59,9 @@ public class MemberServiceImpl implements MemberService {
 			.emailAuthenticationKey(uuid)
 			.build();
 		memberRepository.save(member);
-
 		String email = parameter.getEmail();
-		String subject = "fastlms 사이트 가입을 축하드립니다. ";
-		String text = "<p>fastlms 사이트 가입을 축하드립니다.<p><p>아래 링크를 클릭하셔서 가입을 완료 하세요.</p>"
+		String subject = "사이트 가입을 축하드립니다. ";
+		String text = "<p>사이트 가입을 축하드립니다.<p><p>아래 링크를 클릭하셔서 가입을 완료 하세요.</p>"
 			+ "<div><a target='_blank' href='http://localhost:8080/member/email-auth?id=" + uuid
 			+ "'> 가입 완료 </a></div>";
 		mailComponents.sendMail(email, subject, text);
@@ -112,9 +110,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		Optional<Member> optionalMember = memberRepository.findById(username);
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
 		if (!optionalMember.isPresent()) {
 			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
 		}
@@ -133,8 +131,6 @@ public class MemberServiceImpl implements MemberService {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 
-		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		LocalDateTime now = LocalDateTime.now();
 		memberRepository.save(member);
 		return new User(member.getEmail(), member.getPassword(), grantedAuthorities);
 	}
