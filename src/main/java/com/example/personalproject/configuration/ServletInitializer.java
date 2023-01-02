@@ -1,5 +1,6 @@
-package com.example.personalproject;
+package com.example.personalproject.configuration;
 
+import com.example.personalproject.PersonalProjectApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
