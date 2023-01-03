@@ -1,8 +1,8 @@
 package com.example.personalproject.member.controller;
 
-import com.example.personalproject.model.dto.MemberDto;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.service.MemberService;
+import com.example.personalproject.model.dto.MemberDto;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,12 @@
 package com.example.personalproject.member.service.impl;
 
-import com.example.personalproject.model.dto.MemberDto;
 import com.example.personalproject.components.MailComponents;
 import com.example.personalproject.member.entity.Member;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
+import com.example.personalproject.model.dto.MemberDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,14 +104,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Member> optionalMember = memberRepository.findByEmail(username);
-		if(optionalMember.isEmpty()){
+		if (optionalMember.isEmpty()) {
 			throw new InternalAuthenticationServiceException("회원 정보가 존재하지 않습니다.");
 		}
 		Member member = optionalMember.get();
 		switch (member.getUserStatus()) {
-			case REQ : throw new InternalAuthenticationServiceException("이메일 활성화 이후에 로그인을 해주세요.");
-			case STOP : throw new InternalAuthenticationServiceException("정지된 회원 입니다.");
-			case WITHDRAW : throw new InternalAuthenticationServiceException("탈퇴된 회원 입니다.");
+			case REQ:
+				throw new InternalAuthenticationServiceException("이메일 활성화 이후에 로그인을 해주세요.");
+			case STOP:
+				throw new InternalAuthenticationServiceException("정지된 회원 입니다.");
+			case WITHDRAW:
+				throw new InternalAuthenticationServiceException("탈퇴된 회원 입니다.");
 		}
 
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -122,6 +125,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		memberRepository.save(member);
-		return new User(member.getEmail(),member.getPassword(),grantedAuthorities);
+		return new User(member.getEmail(), member.getPassword(), grantedAuthorities);
 	}
 }
