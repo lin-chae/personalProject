@@ -1,4 +1,4 @@
-package com.example.personalproject;
+package com.example.personalproject.model.dto;
 
 
 import com.example.personalproject.member.entity.Member;

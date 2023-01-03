@@ -29,7 +29,7 @@ public class Member {
 	private String phoneNumber;
 	private boolean emailVerified;
 	private LocalDateTime registrationDate;
-	private LocalDateTime updateDate; // 회원정보 수정일
+	private LocalDateTime updateDate;
 	private boolean adminVerified;
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;

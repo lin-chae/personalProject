@@ -1,10 +1,8 @@
 package com.example.personalproject.member.service.impl;
 
-import com.example.personalproject.MemberDto;
+import com.example.personalproject.model.dto.MemberDto;
 import com.example.personalproject.components.MailComponents;
 import com.example.personalproject.member.entity.Member;
-import com.example.personalproject.member.exception.MemberNotEmailAuthException;
-import com.example.personalproject.member.exception.MemberStopUserException;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.member.repository.MemberRepository;
@@ -101,11 +99,6 @@ public class MemberServiceImpl implements MemberService {
 		Member member = optionalMember.get();
 
 		return MemberDto.of(member);
-	}
-
-	@Override
-	public boolean resetPassword(String email, String password) {
-		return false;
 	}
 
 	@Override
