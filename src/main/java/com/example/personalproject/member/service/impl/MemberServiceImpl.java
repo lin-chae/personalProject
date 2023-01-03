@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -108,20 +109,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public String login(MemberInput parameter) {
-		Optional<Member> optionalMember = memberRepository.findByEmail(parameter.getEmail());
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<Member> optionalMember = memberRepository.findByEmail(username);
 		if(optionalMember.isEmpty()){
-			return "회원 정보가 존재하지 않습니다.";
+			throw new InternalAuthenticationServiceException("회원 정보가 존재하지 않습니다.");
 		}
 		Member member = optionalMember.get();
 		switch (member.getUserStatus()) {
-			case REQ : return "이메일 활성화 이후에 로그인을 해주세요.";
-			case STOP : return "정지된 회원 입니다.";
-			case WITHDRAW : return "탈퇴된 회원 입니다.";
+			case REQ : throw new InternalAuthenticationServiceException("이메일 활성화 이후에 로그인을 해주세요.");
+			case STOP : throw new InternalAuthenticationServiceException("정지된 회원 입니다.");
+			case WITHDRAW : throw new InternalAuthenticationServiceException("탈퇴된 회원 입니다.");
 		}
-		if(!BCrypt.checkpw(parameter.getPassword(),member.getPassword())){
-			return "로그인 실패";
-		}
+
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -130,6 +129,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		memberRepository.save(member);
-		return " ";
+		return new User(member.getEmail(),member.getPassword(),grantedAuthorities);
 	}
 }

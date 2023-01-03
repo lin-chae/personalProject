@@ -24,19 +24,6 @@ public class MemberController {
 		return "member/login";
 	}
 
-	@PostMapping("/member/login")
-	public String loginSubmit(Model model, HttpServletRequest request
-		, MemberInput parameter) {
-
-		String result = memberService.login(parameter);
-		if (result.equals(" ")){
-			return "member/info";
-		}
-		model.addAttribute("result", result);
-
-		return "member/login";
-	}
-
     /*@GetMapping("/member/find-password")
     public String findPassword() {
 

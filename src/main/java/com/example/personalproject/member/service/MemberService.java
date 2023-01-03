@@ -5,7 +5,7 @@ import com.example.personalproject.MemberDto;
 import com.example.personalproject.member.model.MemberInput;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface MemberService {
+public interface MemberService extends UserDetailsService {
 
 	boolean register(MemberInput parameter);
 
@@ -17,6 +17,4 @@ public interface MemberService {
 	MemberDto detail(String email);
 
 	boolean resetPassword(String email, String password);
-
-	String login(MemberInput parameter);
 }
