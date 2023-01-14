@@ -27,12 +27,12 @@ public class MemberDto {
 	boolean adminVerified;
 	UserStatus userStatus;
 	String emailAuthenticationKey;
+	long totalCount;
 
 
 	public static MemberDto of(Member member) {
-
 		return MemberDto.builder()
-			.userId(member.getUserId())
+			.email(member.getEmail())
 			.name(member.getName())
 			.phoneNumber(member.getPhoneNumber())
 			.password(member.getPassword())

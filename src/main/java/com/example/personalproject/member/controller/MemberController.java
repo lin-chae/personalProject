@@ -1,5 +1,6 @@
 package com.example.personalproject.member.controller;
 
+import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.service.MemberService;
 import com.example.personalproject.model.dto.MemberDto;
@@ -14,23 +15,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/member")
 public class MemberController {
 
 	private final MemberService memberService;
 
-	@RequestMapping("/member/login")
+	@RequestMapping("/login")
 	public String login() {
 
 		return "member/login";
 	}
 
-	@GetMapping("/member/register")
+	@GetMapping("/register")
 	public String register() {
 
 		return "member/register";
 	}
 
-	@PostMapping("/member/register")
+	@PostMapping("/register")
 	public String registerSubmit(Model model, HttpServletRequest request
 		, MemberInput parameter) {
 
@@ -40,7 +42,7 @@ public class MemberController {
 		return "member/register_complete";
 	}
 
-	@GetMapping("/member/email-auth")
+	@GetMapping("/email-auth")
 	public String emailAuth(Model model, HttpServletRequest request) {
 
 		String uuid = request.getParameter("id");
@@ -52,14 +54,31 @@ public class MemberController {
 		return "member/email_auth";
 	}
 
-	@GetMapping("/member/info")
+	@GetMapping("/info")
 	public String memberInfo(Model model, Principal principal) {
-
+		if(principal==null){
+			return "error/denied";
+		}
 		String userEmail = principal.getName();
 		MemberDto detail = memberService.detail(userEmail);
-
 		model.addAttribute("detail", detail);
 
 		return "member/info";
+	}
+
+	@PostMapping("/info")
+	public String memberInfoSubmit(Model model
+		, MemberInput parameter
+		, Principal principal) {
+
+		String email = principal.getName();
+		parameter.setEmail(email);
+
+		ServiceResult result = memberService.updateMember(parameter);
+		if (!result.isResult()) {
+			model.addAttribute("message", result.getMessage());
+			return "common/error";
+		}
+		return "redirect:/member/info";
 	}
 }

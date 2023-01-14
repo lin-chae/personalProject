@@ -54,20 +54,20 @@
       <tr>
         <th>전화번호</th>
         <td>
-          <input name="phone" type="text" th:value="${detail.getPhoneNumber()}"/>
+          <input name="phoneNumber" type="text" th:value="${detail.getPhoneNumber()}"/>
         </td>
       </tr>
 
       <tr>
         <th>가입일</th>
         <td>
-          <p th:text="${detail.regDtText}">가입</p>
+          <p th:text="${detail.getRegistrationDate()}">가입</p>
         </td>
       </tr>
       <tr>
         <th>회원정보 수정일</th>
         <td>
-          <p th:text="${detail.udtDtText}">수정</p>
+          <p th:text="${detail.getUpdateDate()}">수정</p>
         </td>
       </tr>
       </tbody>

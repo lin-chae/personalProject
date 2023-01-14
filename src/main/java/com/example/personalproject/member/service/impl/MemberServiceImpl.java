@@ -1,12 +1,16 @@
 package com.example.personalproject.member.service.impl;
 
+import com.example.personalproject.admin.mapper.MemberMapper;
+import com.example.personalproject.admin.model.MemberParam;
 import com.example.personalproject.components.MailComponents;
+import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.entity.Member;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
 import com.example.personalproject.model.dto.MemberDto;
+import com.example.personalproject.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
 	private final MailComponents mailComponents;
+	private final MemberMapper memberMapper;
 
 	/**
 	 * 회원 가입
@@ -70,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
 	public boolean emailAuth(String uuid) {
 
 		Optional<Member> optionalMember = memberRepository.findByEmailAuthenticationKey(uuid);
-		if (!optionalMember.isPresent()) {
+		if (optionalMember.isEmpty()) {
 			return false;
 		}
 
@@ -92,14 +98,85 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto detail(String email) {
 
 		Optional<Member> optionalMember = memberRepository.findByEmail(email);
-		if (!optionalMember.isPresent()) {
+		if (optionalMember.isEmpty()) {
 			return null;
 		}
 
 		Member member = optionalMember.get();
-
 		return MemberDto.of(member);
 	}
+
+	@Override
+	public ServiceResult updateMember(MemberInput parameter) {
+		String email = parameter.getEmail();
+
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
+		if (optionalMember.isEmpty()) {
+			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		member.setPhoneNumber(parameter.getPhoneNumber());
+		member.setUpdateDate(LocalDateTime.now());
+		memberRepository.save(member);
+
+		return new ServiceResult();
+	}
+
+	@Override
+	public ServiceResult updateMemberPassword(MemberInput parameter) {
+		String email = parameter.getEmail();
+
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
+		if (optionalMember.isEmpty()) {
+			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		if (!PasswordUtils.equals(parameter.getPassword(), member.getPassword())) {
+			return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+		}
+
+		String encPassword = PasswordUtils.encPassword(parameter.getNewPassword());
+		member.setPassword(encPassword);
+		memberRepository.save(member);
+
+		return new ServiceResult(true);
+	}
+
+	@Override
+	public boolean updateStatus(String email, UserStatus userStatus) {
+		Optional<Member> optionalMember = memberRepository.findById(email);
+		if (optionalMember.isEmpty()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		member.setUserStatus(userStatus);
+		memberRepository.save(member);
+
+		return true;
+	}
+
+	@Override
+	public List<MemberDto> list(MemberParam parameter) {
+		long totalCount = memberMapper.selectListCount(parameter);
+
+		List<MemberDto> list = memberMapper.selectList(parameter);
+		if (!CollectionUtils.isEmpty(list)) {
+			int i = 0;
+			for(MemberDto x : list) {
+				x.setTotalCount(totalCount);
+				i++;
+			}
+		}
+
+		return list;
+	}
+
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
