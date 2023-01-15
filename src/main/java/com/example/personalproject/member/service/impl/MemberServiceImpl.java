@@ -6,6 +6,7 @@ import com.example.personalproject.components.MailComponents;
 import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.entity.Member;
 import com.example.personalproject.member.model.MemberInput;
+import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
@@ -146,6 +147,32 @@ public class MemberServiceImpl implements MemberService {
 		return new ServiceResult(true);
 	}
 
+	/*@Override
+	public boolean sendResetPassword(ResetPasswordInput parameter) {
+
+		Optional<Member> optionalMember = memberRepository.findByEmailAndName(parameter.getEmail(), parameter.getUserName());
+		if (!optionalMember.isPresent()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		String uuid = UUID.randomUUID().toString();
+
+		member.setResetPasswordKey(uuid);
+		member.setResetPasswordLimitDt(LocalDateTime.now().plusDays(1));
+		memberRepository.save(member);
+
+		String email = parameter.getEmail();
+		String subject = "[fastlms] 비밀번호 초기화 메일 입니다. ";
+		String text = "<p>fastlms 비밀번호 초기화 메일 입니다.<p>" +
+			"<p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>"+
+			"<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid + "'> 비밀번호 초기화 링크 </a></div>";
+		mailComponents.sendMail(email, subject, text);
+
+		return false;
+	}*/
+
 	@Override
 	public boolean updateStatus(String email, UserStatus userStatus) {
 		Optional<Member> optionalMember = memberRepository.findById(email);
@@ -175,6 +202,16 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		return list;
+	}
+
+	@Override
+	public boolean checkResetPassword(String uuid) {
+		return false;
+	}
+
+	@Override
+	public boolean resetPassword(String email, String password) {
+		return false;
 	}
 
 

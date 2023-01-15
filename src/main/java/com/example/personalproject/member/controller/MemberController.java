@@ -2,6 +2,7 @@ package com.example.personalproject.member.controller;
 
 import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.model.MemberInput;
+import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.service.MemberService;
 import com.example.personalproject.model.dto.MemberDto;
 import java.security.Principal;
@@ -56,7 +57,7 @@ public class MemberController {
 
 	@GetMapping("/info")
 	public String memberInfo(Model model, Principal principal) {
-		if(principal==null){
+		if (principal == null) {
 			return "error/denied";
 		}
 		String userEmail = principal.getName();
@@ -79,6 +80,59 @@ public class MemberController {
 			model.addAttribute("message", result.getMessage());
 			return "common/error";
 		}
+		return "redirect:/member/info";
+	}
+
+	@GetMapping("/reset/password")
+	public String resetPassword(Model model, HttpServletRequest request) {
+		String uuid = request.getParameter("email");
+
+		boolean result = memberService.checkResetPassword(uuid);
+
+		model.addAttribute("result", result);
+
+		return "member/reset_password";
+	}
+
+	@PostMapping("/reset/password")
+	public String resetPasswordSubmit(Model model, ResetPasswordInput parameter) {
+		boolean result = false;
+		try {
+			result = memberService.resetPassword(parameter.getEmail(), parameter.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		model.addAttribute("result", result);
+
+		return "member/reset_password_result";
+	}
+
+	@GetMapping("/password")
+	public String memberPassword(Model model, Principal principal) {
+
+		String userEmail = principal.getName();
+		MemberDto detail = memberService.detail(userEmail);
+
+		model.addAttribute("detail", detail);
+
+		return "member/password";
+	}
+
+	@PostMapping("/password")
+	public String memberPasswordSubmit(Model model
+		, MemberInput parameter
+		, Principal principal) {
+
+		String userEmail = principal.getName();
+		parameter.setEmail(userEmail);
+
+		ServiceResult result = memberService.updateMemberPassword(parameter);
+		if (!result.isResult()) {
+			model.addAttribute("message", result.getMessage());
+			return "common/error";
+		}
+
 		return "redirect:/member/info";
 	}
 }

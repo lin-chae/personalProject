@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 public class ResetPasswordInput {
 
-	private String userId;
+	private String email;
 	private String userName;
 
 	private String id;

@@ -34,4 +34,6 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;
 	private String emailAuthenticationKey;
+	private String resetPasswordKey;
+	private LocalDateTime resetPasswordLimitDt;
 }
