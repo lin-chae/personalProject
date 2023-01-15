@@ -55,6 +55,21 @@ public class MemberController {
 		return "member/email_auth";
 	}
 
+	@GetMapping("/find-password")
+	public String findPassword() {
+
+		return "member/find_password";
+	}
+
+	@PostMapping("/find-password")
+	public String findPasswordSubmit(Model model, ResetPasswordInput parameter) {
+		System.out.println(parameter);
+		boolean result = memberService.sendResetPassword(parameter);
+		model.addAttribute("result", result);
+
+		return "member/find_password_result";
+	}
+
 	@GetMapping("/info")
 	public String memberInfo(Model model, Principal principal) {
 		if (principal == null) {
@@ -85,8 +100,7 @@ public class MemberController {
 
 	@GetMapping("/reset/password")
 	public String resetPassword(Model model, HttpServletRequest request) {
-		String uuid = request.getParameter("email");
-
+		String uuid = request.getParameter("id");
 		boolean result = memberService.checkResetPassword(uuid);
 
 		model.addAttribute("result", result);
@@ -98,7 +112,7 @@ public class MemberController {
 	public String resetPasswordSubmit(Model model, ResetPasswordInput parameter) {
 		boolean result = false;
 		try {
-			result = memberService.resetPassword(parameter.getEmail(), parameter.getPassword());
+			result = memberService.resetPassword(parameter.getId(), parameter.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

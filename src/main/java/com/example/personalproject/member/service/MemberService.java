@@ -4,6 +4,7 @@ package com.example.personalproject.member.service;
 import com.example.personalproject.admin.model.MemberParam;
 import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.model.MemberInput;
+import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.model.dto.MemberDto;
 import java.util.List;
@@ -30,4 +31,6 @@ public interface MemberService extends UserDetailsService {
 	boolean checkResetPassword(String uuid);
 
 	boolean resetPassword(String email, String password);
+
+	boolean sendResetPassword(ResetPasswordInput parameter);
 }
