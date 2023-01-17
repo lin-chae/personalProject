@@ -6,6 +6,7 @@ import lombok.ToString;
 @ToString
 @Data
 public class ResetPasswordInput {
+
 	private String email;
 
 	private String id;

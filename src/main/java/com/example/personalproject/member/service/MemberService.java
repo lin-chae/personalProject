@@ -26,6 +26,7 @@ public interface MemberService extends UserDetailsService {
 	ServiceResult updateMemberPassword(MemberInput parameter);
 
 	boolean updateStatus(String email, UserStatus userStatus);
+
 	List<MemberDto> list(MemberParam parameter);
 
 	boolean checkResetPassword(String uuid);

@@ -152,8 +152,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Optional<Member> optionalMember = memberRepository.findByEmail(parameter.getEmail());
 		if (optionalMember.isEmpty()) {
-			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
-
+			return false;
 		}
 
 		Member member = optionalMember.get();
@@ -167,11 +166,12 @@ public class MemberServiceImpl implements MemberService {
 		String email = parameter.getEmail();
 		String subject = "[00마켓]비밀번호 초기화 메일 입니다. ";
 		String text = "<p>00마켓 비밀번호 초기화 메일 입니다.<p>" +
-			"<p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>"+
-			"<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid + "'> 비밀번호 초기화 링크 </a></div>";
+			"<p>아래 링크를 클릭하셔서 비밀번호를 초기화 해주세요.</p>" +
+			"<div><a target='_blank' href='http://localhost:8080/member/reset/password?id=" + uuid
+			+ "'> 비밀번호 초기화 링크 </a></div>";
 		mailComponents.sendMail(email, subject, text);
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class MemberServiceImpl implements MemberService {
 		List<MemberDto> list = memberMapper.selectList(parameter);
 		if (!CollectionUtils.isEmpty(list)) {
 			int i = 0;
-			for(MemberDto x : list) {
+			for (MemberDto x : list) {
 				x.setTotalCount(totalCount);
 				i++;
 			}
@@ -215,11 +215,11 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = optionalMember.get();
 		//초기화 날짜가 유효한지 체크
-		if(member.getResetPasswordLimitDt()==null){
+		if (member.getResetPasswordLimitDt() == null) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
 
-		if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())){
+		if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
 
@@ -235,15 +235,15 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = optionalMember.get();
 		//초기화 날짜가 유효한지 체크
-		if(member.getResetPasswordLimitDt()==null){
+		if (member.getResetPasswordLimitDt() == null) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
 
-		if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())){
+		if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
 
-		String encPassword = BCrypt.hashpw(password,BCrypt.gensalt());
+		String encPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 		member.setPassword(encPassword);
 		member.setResetPasswordKey("");
 		member.setResetPasswordLimitDt(null);
