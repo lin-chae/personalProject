@@ -176,7 +176,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public boolean updateStatus(String email, UserStatus userStatus) {
-		Optional<Member> optionalMember = memberRepository.findById(email);
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
 		if (optionalMember.isEmpty()) {
 			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
 		}
@@ -214,7 +214,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		Member member = optionalMember.get();
-		//초기화 날짜가 유효한지 체크
+
 		if (member.getResetPasswordLimitDt() == null) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
@@ -234,7 +234,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		Member member = optionalMember.get();
-		//초기화 날짜가 유효한지 체크
+
 		if (member.getResetPasswordLimitDt() == null) {
 			throw new RuntimeException("유효한 날짜가 아닙니다.");
 		}
@@ -247,6 +247,51 @@ public class MemberServiceImpl implements MemberService {
 		member.setPassword(encPassword);
 		member.setResetPasswordKey("");
 		member.setResetPasswordLimitDt(null);
+		memberRepository.save(member);
+
+		return true;
+	}
+
+	@Override
+	public ServiceResult withdraw(String email, String password) {
+
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
+		if (optionalMember.isEmpty()) {
+			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		if (!PasswordUtils.equals(password, member.getPassword())) {
+			return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+		}
+
+		member.setName("삭제회원");
+		member.setPhoneNumber("");
+		member.setPassword("");
+		member.setRegistrationDate(null);
+		member.setUpdateDate(null);
+		member.setEmailVerified(false);
+		member.setEmailAuthenticationKey(null);
+		member.setResetPasswordKey("");
+		member.setResetPasswordLimitDt(null);
+		member.setUserStatus(UserStatus.WITHDRAW);
+		memberRepository.save(member);
+
+		return new ServiceResult();
+	}
+
+	@Override
+	public boolean updatePassword(String email, String password) {
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
+		if (optionalMember.isEmpty()) {
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
+		}
+
+		Member member = optionalMember.get();
+
+		String encPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		member.setPassword(encPassword);
 		memberRepository.save(member);
 
 		return true;

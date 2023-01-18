@@ -34,4 +34,8 @@ public interface MemberService extends UserDetailsService {
 	boolean resetPassword(String email, String password);
 
 	boolean sendResetPassword(ResetPasswordInput parameter);
+
+	ServiceResult withdraw(String email, String password);
+
+	boolean updatePassword(String email, String password);
 }

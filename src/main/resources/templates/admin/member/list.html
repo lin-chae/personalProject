@@ -91,7 +91,7 @@
       <td th:text="${x.userId}">1</td>
       <td>
         <a th:text="${x.getEmail()}"
-           th:href="${'detail.do?userId=' + x.userId}">
+           th:href="${'detail.do?email=' + x.getEmail()}">
           00000@naver.com</a>
       </td>
       <td th:text="${x.getName()}">홍길동</td>

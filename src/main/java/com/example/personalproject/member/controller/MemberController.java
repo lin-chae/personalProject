@@ -149,4 +149,26 @@ public class MemberController {
 
 		return "redirect:/member/info";
 	}
+
+	@GetMapping("/withdraw")
+	public String memberWithdraw(Model model) {
+
+		return "member/withdraw";
+	}
+
+	@PostMapping("/withdraw")
+	public String memberWithdrawSubmit(Model model
+		, MemberInput parameter
+		, Principal principal) {
+
+		String email = principal.getName();
+
+		ServiceResult result = memberService.withdraw(email, parameter.getPassword());
+		if (!result.isResult()) {
+			model.addAttribute("message", result.getMessage());
+			return "common/error";
+		}
+
+		return "redirect:/member/logout";
+	}
 }

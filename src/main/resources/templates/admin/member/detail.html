@@ -68,7 +68,7 @@
         </p>
         <div>
           <form method="post" action="/admin/member/status.do">
-            <input th:value="${member.userId}" type="hidden" name="userId"/>
+            <input th:value="${member.getEmail()}" type="hidden" name="email"/>
             <select name="userStatus">
               <option value="REQ">가입승인중</option>
               <option value="ING">정상이용중</option>
@@ -85,7 +85,7 @@
       <td>
         <div>
           <form method="post" action="/admin/member/password.do">
-            <input th:value="${member.userId}" type="hidden" name="userId"/>
+            <input th:value="${member.getEmail()}" type="hidden" name="email"/>
             <input type="text" name="password"/>
             <button type="submit">비밀번호 초기화</button>
           </form>

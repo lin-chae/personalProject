@@ -1,5 +1,6 @@
-package com.example.personalproject.admin.controller;
+package com.example.personalproject.member.controller;
 
+import com.example.personalproject.admin.controller.BaseController;
 import com.example.personalproject.admin.model.MemberInput;
 import com.example.personalproject.admin.model.MemberParam;
 import com.example.personalproject.member.service.MemberService;
@@ -44,7 +45,6 @@ public class AdminMemberController extends BaseController {
 	public String detail(Model model, MemberParam parameter) {
 
 		parameter.init();
-
 		MemberDto member = memberService.detail(parameter.getEmail());
 		model.addAttribute("member", member);
 
@@ -54,10 +54,17 @@ public class AdminMemberController extends BaseController {
 	@PostMapping("/status.do")
 	public String status(Model model, MemberInput parameter) {
 
-		boolean result = memberService.updateStatus(parameter.getEmail(),
-			parameter.getUserStatus());
+		boolean result = memberService.updateStatus(parameter.getEmail(), parameter.getUserStatus());
 
-		return "redirect:/admin/member/detail.do?userId=" + parameter.getEmail();
+		return "redirect:/admin/member/detail.do?email=" + parameter.getEmail();
+	}
+	@PostMapping("/password.do")
+	public String password(Model model, MemberInput parameter) {
+
+
+		boolean result = memberService.updatePassword(parameter.getEmail(), parameter.getPassword());
+
+		return "redirect:/admin/member/detail.do?email=" + parameter.getEmail();
 	}
 
 }
