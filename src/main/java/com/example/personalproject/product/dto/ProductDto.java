@@ -35,6 +35,7 @@ public class ProductDto {
 
 	public static ProductDto of(Product product) {
 		return ProductDto.builder()
+			.productId(product.getProductId())
 			.categoryId(product.getCategoryId())
 			.imagePath(product.getImagePath())
 			.keyword(product.getKeyword())

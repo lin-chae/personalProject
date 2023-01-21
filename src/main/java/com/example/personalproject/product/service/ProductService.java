@@ -1,8 +1,10 @@
 package com.example.personalproject.product.service;
 
+import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.product.dto.ProductDto;
 import com.example.personalproject.product.model.ProductInput;
 import com.example.personalproject.product.model.ProductParam;
+import com.example.personalproject.product.model.CartInput;
 import java.util.List;
 
 public interface ProductService {
@@ -27,9 +29,8 @@ public interface ProductService {
     ProductDto frontDetail(long id);
 
     
-    /**
-     * 전체 강좌 목록
-     */
+
     List<ProductDto> listAll();
-    
+
+    ServiceResult req(CartInput parameter);
 }

@@ -1,4 +1,4 @@
-package com.example.personalproject.model.dto;
+package com.example.personalproject.member.dto;
 
 
 import com.example.personalproject.member.entity.Member;
@@ -28,6 +28,7 @@ public class MemberDto {
 	UserStatus userStatus;
 	String emailAuthenticationKey;
 	long totalCount;
+	long seq;
 
 
 	public static MemberDto of(Member member) {

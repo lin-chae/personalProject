@@ -1,12 +1,11 @@
-package com.example.personalproject.product.controller;/*
 package com.example.personalproject.product.controller;
 
-
-import com.zerobase.fastlms.admin.service.CategoryService;
-import com.zerobase.fastlms.common.model.ResponseResult;
-import com.zerobase.fastlms.course.model.ServiceResult;
-import com.zerobase.fastlms.course.model.TakeCourseInput;
-import com.zerobase.fastlms.course.service.CourseService;
+import com.example.personalproject.admin.controller.BaseController;
+import com.example.personalproject.category.service.CategoryService;
+import com.example.personalproject.member.ServiceResult;
+import com.example.personalproject.model.ResponseResult;
+import com.example.personalproject.product.model.CartInput;
+import com.example.personalproject.product.service.ProductService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ApiCourseController extends BaseController {
+public class ApiProductController extends BaseController {
     
-    private final CourseService courseService;
+    private final ProductService productService;
     private final CategoryService categoryService;
     
     @PostMapping("/api/course/req.api")
     public ResponseEntity<?> courseReq(Model model
-            , @RequestBody TakeCourseInput parameter
+            , @RequestBody CartInput parameter
             , Principal principal) {
         
-        parameter.setUserId(principal.getName());
-    
-        ServiceResult result = courseService.req(parameter);
+        parameter.setEmail(principal.getName());
+
+        ServiceResult result = productService.req(parameter);
         if (!result.isResult()) {
             ResponseResult responseResult = new ResponseResult(false, result.getMessage());
             return ResponseEntity.ok().body(responseResult);
@@ -41,4 +40,3 @@ public class ApiCourseController extends BaseController {
     
     
 }
-*/

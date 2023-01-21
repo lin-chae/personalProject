@@ -6,7 +6,7 @@ import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.model.UserStatus;
-import com.example.personalproject.model.dto.MemberDto;
+import com.example.personalproject.member.dto.MemberDto;
 import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

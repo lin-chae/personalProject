@@ -29,19 +29,6 @@
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function() {
-
-            $('#submitForm').on('submit', function() {
-                oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
-
-
-
-            });
-
-
-        });
-    </script>
 </head>
 <body>
 <!--<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>-->
@@ -112,7 +99,10 @@
             <tr>
                 <th>첨부 파일</th>
                 <td>
-                    <input type="file" name="file" />
+                    <input type="file" name="file"/>
+                    <p>
+                        <a th:text="${detail.getFilename()}">  이미지 없음</a>
+                    </p>
                 </td>
             </tr>
 
@@ -128,24 +118,5 @@
     </form>
 </div>
 
-
-<script type="text/javascript" src="/resources/static/res.se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
-<script type="text/javascript">
-
-    var oEditors = [];
-
-    setTimeout(function() {
-
-        nhn.husky.EZCreator.createInIFrame({
-            oAppRef: oEditors,
-            elPlaceHolder: "contents",
-            sSkinURI: "/resources/static/res.se2/SmartEditor2Skin.html",
-            fCreator: "createSEditor2"
-        });
-
-
-    }, 100);
-
-</script>
 </body>
 </html>

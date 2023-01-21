@@ -1,15 +1,18 @@
 package com.example.personalproject.product.service;
 
 
+import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.product.dto.ProductDto;
 import com.example.personalproject.product.entity.Product;
 import com.example.personalproject.product.mapper.ProductMapper;
 import com.example.personalproject.product.model.ProductInput;
 import com.example.personalproject.product.model.ProductParam;
+import com.example.personalproject.product.model.CartInput;
 import com.example.personalproject.product.repository.ProductRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -154,7 +157,12 @@ public class ProductServiceImpl implements ProductService {
         
         return ProductDto.of(productList);
     }
-    
+
+    @Override
+    public ServiceResult req(CartInput parameter) {
+        return null;
+    }
+
 }
 
 

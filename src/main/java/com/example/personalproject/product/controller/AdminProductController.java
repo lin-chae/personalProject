@@ -11,6 +11,7 @@ import com.example.personalproject.product.service.ProductService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -65,6 +66,7 @@ public class AdminProductController extends BaseController {
         if (editMode) {
             long id = parameter.getProductId();
             ProductDto existProduct = productService.getById(id);
+            System.out.println(existProduct);
             if (existProduct == null) {
                 // error 처리
                 model.addAttribute("message", "상품정보가 존재하지 않습니다.");
@@ -96,7 +98,7 @@ public class AdminProductController extends BaseController {
         for(String dir : dirs) {
             File file = new File(dir);
             if (!file.isDirectory()) {
-                file.mkdir();
+                file.mkdirs();
             }
         }
         
@@ -129,7 +131,6 @@ public class AdminProductController extends BaseController {
         
         if (file != null) {
             String originalFilename = file.getOriginalFilename();
-            
             String baseLocalPath = "/Users/flsrh/ZerobaseProject/personalProject/src/main/resources/static/files";
             String baseUrlPath = "/files";
             
@@ -140,12 +141,12 @@ public class AdminProductController extends BaseController {
             
             try {
                 File newFile = new File(saveFilename);
-                FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(newFile));
+                FileCopyUtils.copy(file.getInputStream(), Files.newOutputStream(newFile.toPath()));
             } catch (IOException e) {
                 log.info("############################ - 1");
                 log.info(e.getMessage());
             }
-            parameter.setFilename(saveFilename);
+            parameter.setFilename(originalFilename);
             parameter.setUrlFilename(urlFilename);
         }
         

@@ -4,7 +4,7 @@ import com.example.personalproject.admin.controller.BaseController;
 import com.example.personalproject.admin.model.MemberInput;
 import com.example.personalproject.admin.model.MemberParam;
 import com.example.personalproject.member.service.MemberService;
-import com.example.personalproject.model.dto.MemberDto;
+import com.example.personalproject.member.dto.MemberDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

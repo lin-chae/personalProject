@@ -10,7 +10,7 @@ import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.model.UserStatus;
 import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
-import com.example.personalproject.model.dto.MemberDto;
+import com.example.personalproject.member.dto.MemberDto;
 import com.example.personalproject.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -198,6 +198,7 @@ public class MemberServiceImpl implements MemberService {
 			int i = 0;
 			for (MemberDto x : list) {
 				x.setTotalCount(totalCount);
+				x.setSeq(totalCount-parameter.getPageStart()-i);
 				i++;
 			}
 		}
