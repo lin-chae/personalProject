@@ -2,26 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>강좌 정보 페이지</title>
-    <style>
-        span.price {
-            text-decoration: line-through;
-        }
-    </style>
+    <title>상품 정보 페이지</title>
 </head>
 <body>
-    <h1>강좌 목록 </h1>
+    <h1>상품 목록 </h1>
     <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
 
 
     <div>
         <a href="?">
-            전체 (<span th:text="${courseTotalCount}">0</span>)</a>
+            전체 (<span th:text="${productTotalCount}">0</span>)</a>
 
         <th:block th:each="y : ${categoryList}">
             |
-            <a th:href="'/course?categoryId=' + ${y.id}">
-                <span th:text="${y.categoryName}">카테고리명</span> (<span th:text="${y.courseCount}">0</span>)</a>
+            <a th:href="'/product?categoryId=' + ${y.getId()}">
+                <span th:text="${y.categoryName}">카테고리명</span> (<span th:text="${y.getProductCount()}">0</span>)</a>
         </th:block>
 
         <hr/>
@@ -30,13 +25,13 @@
     <ul>
         <li th:each="x : ${list}">
             <div>
-                <a th:href="'/course/' + ${x.id}">
-                    <h3 th:text="${x.productName}">강좌명</h3>
+                <a th:href="${'/productId/' + x.getProductId()}">
+                    <h3 th:text="${x.productName}">상품명</h3>
                 </a>
                 <div>
-                    <p th:text="${x.summary}"></p>
+                    <p th:text="${x.getSummary()}"></p>
                     <p>
-                        판매가: <span class="price" th:text="${x.price}"></span>
+                        판매가: <span class="price" th:text="${x.getPrice()}"></span>
                     </p>
                 </div>
             </div>

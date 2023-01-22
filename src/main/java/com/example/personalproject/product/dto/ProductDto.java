@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
 	Long productId;
 	long categoryId;
+	String ProductName;
 	String imagePath;
 	String keyword;
 	String productName;
@@ -37,6 +38,7 @@ public class ProductDto {
 		return ProductDto.builder()
 			.productId(product.getProductId())
 			.categoryId(product.getCategoryId())
+			.productName(product.getProductName())
 			.imagePath(product.getImagePath())
 			.keyword(product.getKeyword())
 			.productName(product.getProductName())

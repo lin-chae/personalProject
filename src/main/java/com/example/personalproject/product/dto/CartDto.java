@@ -1,6 +1,8 @@
-package com.example.personalproject.product.dto;/*
 package com.example.personalproject.product.dto;
 
+import com.example.personalproject.product.entity.Cart;
+import com.example.personalproject.product.entity.Product;
+import com.example.personalproject.product.model.OrderStatus;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
@@ -12,22 +14,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class TakeCourseDto {
+public class CartDto {
     
-    long id;
-    long courseId;
-    String userId;
+    long cartId;
+    long productId;
+    String email;
     
-    long payPrice;//결제금액
-    String status;//상태(수강신청, 결재완료, 수강취소)
+    long payPrice;
+    OrderStatus orderStatus;
     
-    LocalDateTime regDt;//신청일
+    LocalDateTime regDt;
     
     
     
     // JOIN
     String userName;
-    String phone;
+    String phoneNumber;
     String subject;
     
     
@@ -36,14 +38,14 @@ public class TakeCourseDto {
     long totalCount;
     long seq;
     
-    public static TakeCourseDto of(TakeCourse x) {
+    public static CartDto of(Cart x) {
     
-        return TakeCourseDto.builder()
-                .id(x.getId())
-                .courseId(x.getCourseId())
-                .userId(x.getUserId())
+        return CartDto.builder()
+                .cartId(x.getCartId())
+                .productId(x.getProductId())
+                .email(x.getEmail())
                 .payPrice(x.getPayPrice())
-                .status(x.getStatus())
+                .orderStatus(x.getOrderStatus())
                 .regDt(x.getRegDt())
                 .build();
     }
@@ -72,4 +74,3 @@ public class TakeCourseDto {
 
 
 
-*/

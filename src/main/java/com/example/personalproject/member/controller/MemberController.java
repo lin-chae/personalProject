@@ -1,11 +1,17 @@
 package com.example.personalproject.member.controller;
 
 import com.example.personalproject.member.ServiceResult;
+import com.example.personalproject.member.entity.Member;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.ResetPasswordInput;
+import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
 import com.example.personalproject.member.dto.MemberDto;
+import com.example.personalproject.product.dto.CartDto;
+import com.example.personalproject.product.repository.CartRepository;
+import com.example.personalproject.product.service.CartService;
 import java.security.Principal;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final CartService cartService;
+	private final MemberRepository memberRepository;
 
 	@RequestMapping("/login")
 	public String login() {
@@ -171,4 +179,16 @@ public class MemberController {
 
 		return "redirect:/member/logout";
 	}
+
+	@GetMapping("/cart")
+	public String memberCart(Model model, Principal principal) {
+
+		long userId = memberRepository.findByEmail(principal.getName()).get().getUserId();
+		List<CartDto> list = cartService.myProduct(userId);
+
+		model.addAttribute("list", list);
+
+		return "member/cart";
+	}
+
 }

@@ -1,13 +1,13 @@
-package com.example.personalproject.product.controller;/*
 package com.example.personalproject.product.controller;
 
 
-import com.zerobase.fastlms.course.dto.CourseDto;
-import com.zerobase.fastlms.course.dto.TakeCourseDto;
-import com.zerobase.fastlms.course.model.ServiceResult;
-import com.zerobase.fastlms.course.model.TakeCourseParam;
-import com.zerobase.fastlms.course.service.CourseService;
-import com.zerobase.fastlms.course.service.TakeCourseService;
+import com.example.personalproject.admin.controller.BaseController;
+import com.example.personalproject.member.ServiceResult;
+import com.example.personalproject.product.dto.CartDto;
+import com.example.personalproject.product.dto.ProductDto;
+import com.example.personalproject.product.model.CartParam;
+import com.example.personalproject.product.service.CartService;
+import com.example.personalproject.product.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,20 +16,22 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-public class AdminTakeCourseController extends BaseController {
+@RequestMapping("/admin/cart")
+public class AdminCartController extends BaseController {
     
-    private final CourseService courseService;
-    private final TakeCourseService takeCourseService;
+    private final ProductService productService;
+    private final CartService cartService;
     
-    @GetMapping("/admin/takecourse/list.do")
-    public String list(Model model, TakeCourseParam parameter
+    @GetMapping("/list.do")
+    public String list(Model model, CartParam parameter
         , BindingResult bindingResult) {
     
         parameter.init();
-        List<TakeCourseDto> list = takeCourseService.list(parameter);
+        List<CartDto> list = cartService.list(parameter);
         
         long totalCount = 0;
         if (!CollectionUtils.isEmpty(list)) {
@@ -43,24 +45,23 @@ public class AdminTakeCourseController extends BaseController {
         model.addAttribute("pager", pagerHtml);
         
         
-        List<CourseDto> courseList = courseService.listAll();
-        model.addAttribute("courseList", courseList);
+        List<ProductDto> productList = productService.listAll();
+        model.addAttribute("productList", productList);
         
         
     
-        return "admin/takecourse/list";
+        return "admin/cart/list";
     }
     
-    @PostMapping("/admin/takecourse/status.do")
-    public String status(Model model, TakeCourseParam parameter) {
+    @PostMapping("/status.do")
+    public String status(Model model, CartParam parameter) {
         
-        ServiceResult result = takeCourseService.updateStatus(parameter.getId(), parameter.getStatus());
+        ServiceResult result = cartService.updateStatus(parameter.getCartId(), parameter.getOrderStatus());
         if (!result.isResult()) {
             model.addAttribute("message", result.getMessage());
             return "common/error";
         }
         
-        return "redirect:/admin/takecourse/list.do";
+        return "redirect:/admin/cart/list.do";
     }
 }
-*/

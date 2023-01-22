@@ -21,8 +21,8 @@ public class ApiProductController extends BaseController {
     private final ProductService productService;
     private final CategoryService categoryService;
     
-    @PostMapping("/api/course/req.api")
-    public ResponseEntity<?> courseReq(Model model
+    @PostMapping("/api/product/req.api")
+    public ResponseEntity<?> productReq(Model model
             , @RequestBody CartInput parameter
             , Principal principal) {
         

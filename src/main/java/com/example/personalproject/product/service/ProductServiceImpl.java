@@ -1,13 +1,19 @@
 package com.example.personalproject.product.service;
 
 
+import static com.example.personalproject.product.model.OrderStatus.COMPLETE;
+import static com.example.personalproject.product.model.OrderStatus.REQ;
+
 import com.example.personalproject.member.ServiceResult;
 import com.example.personalproject.product.dto.ProductDto;
+import com.example.personalproject.product.entity.Cart;
 import com.example.personalproject.product.entity.Product;
 import com.example.personalproject.product.mapper.ProductMapper;
+import com.example.personalproject.product.model.OrderStatus;
 import com.example.personalproject.product.model.ProductInput;
 import com.example.personalproject.product.model.ProductParam;
 import com.example.personalproject.product.model.CartInput;
+import com.example.personalproject.product.repository.CartRepository;
 import com.example.personalproject.product.repository.ProductRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,8 +31,9 @@ public class ProductServiceImpl implements ProductService {
     
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    
-    
+    private final CartRepository cartRepository;
+
+
     private LocalDate getLocalDate(String value) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
@@ -160,7 +167,39 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ServiceResult req(CartInput parameter) {
-        return null;
+        ServiceResult result = new ServiceResult();
+
+        Optional<Product> optionalProduct = productRepository.findById(parameter.getProductId());
+        if (!optionalProduct.isPresent()) {
+            result.setResult(false);
+            result.setMessage("상품 정보가 존재하지 않습니다.");
+            return result;
+        }
+
+        Product product = optionalProduct.get();
+
+        //이미 신청정보가 있는지 확인
+        OrderStatus[] statusList = {REQ, COMPLETE};
+        long count = cartRepository.countByProductIdAndEmailAndOrderStatusIn(product.getProductId(), parameter.getEmail(), Arrays.asList(statusList));
+
+        if (count > 0) {
+            result.setResult(false);
+            result.setMessage("이미 신청한 강좌 정보가 존재합니다.");
+            return result;
+        }
+
+        Cart cart = Cart.builder()
+            .productId(product.getProductId())
+            .email(parameter.getEmail())
+            .payPrice(product.getPrice())
+            .regDt(LocalDateTime.now())
+            .orderStatus(REQ)
+            .build();
+        cartRepository.save(cart);
+
+        result.setResult(true);
+        result.setMessage("");
+        return result;
     }
 
 }

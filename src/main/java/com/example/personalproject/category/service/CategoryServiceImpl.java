@@ -1,5 +1,6 @@
 package com.example.personalproject.category.service;
 
+import com.example.personalproject.category.mapper.CategoryMapper;
 import com.example.personalproject.category.model.CategoryInput;
 import com.example.personalproject.category.repository.CategoryRepository;
 import com.example.personalproject.category.dto.CategoryDto;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService {
     
     private final CategoryRepository categoryRepository;
-    //private final CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
 
     private Sort getSortBySortValueDesc() {
         return Sort.by(Sort.Direction.DESC, "sortValue");
@@ -61,9 +62,9 @@ public class CategoryServiceImpl implements CategoryService {
         return true;
     }
     
-    /*@Override
+    @Override
     public List<CategoryDto> frontList(CategoryDto parameter) {
 
         return categoryMapper.select(parameter);
-    }*/
+    }
 }

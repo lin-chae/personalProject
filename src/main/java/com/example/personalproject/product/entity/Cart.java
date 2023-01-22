@@ -1,6 +1,6 @@
-package com.example.personalproject.product.entity;/*
 package com.example.personalproject.product.entity;
 
+import com.example.personalproject.product.model.OrderStatus;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,18 +16,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-public class TakeCourse implements TakeCourseCode {
+public class Cart {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long cartId;
     
-    long courseId;
-    String userId;
+    long productId;
+    String email;
     
-    long payPrice;//결제금액
-    Enum status;//상태(수강신청, 결재완료, 수강취소)
+    long payPrice;
+    OrderStatus orderStatus;
     
-    LocalDateTime regDt;//신청일
+    LocalDateTime regDt;
 }
-*/
