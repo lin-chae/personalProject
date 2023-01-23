@@ -14,8 +14,6 @@ public interface CartService {
 
     ServiceResult updateStatus(long cartId, OrderStatus orderStatus);
 
-    List<CartDto> myProduct(long userId);
-
 
     ServiceResult cancel(long id);
 }

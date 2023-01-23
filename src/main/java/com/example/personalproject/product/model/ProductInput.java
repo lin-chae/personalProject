@@ -11,6 +11,7 @@ public class ProductInput {
     String summary;
     String contents;
     long price;
+    long quantity;
     
     //삭제를 위한
     String idList;

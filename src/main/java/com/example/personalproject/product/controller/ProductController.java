@@ -26,7 +26,6 @@ public class ProductController extends BaseController {
         
         List<ProductDto> list = productService.frontList(parameter);
         model.addAttribute("list", list);
-        
         int productTotalCount = 0;
         List<CategoryDto> categoryList = categoryService.frontList(CategoryDto.builder().build());
         if (categoryList != null) {
@@ -41,11 +40,13 @@ public class ProductController extends BaseController {
         return "product/index";
     }
     
-    @GetMapping("/product/{id}")
+    @GetMapping("/product/{productId}")
     public String productDetail(Model model
-            , ProductParam parameter) {
-        
+            , ProductParam parameter) throws Exception {
         ProductDto detail = productService.frontDetail(parameter.getProductId());
+        if (detail==null){
+            throw new Exception("상품 정보가 없습니다.");
+        }
         model.addAttribute("detail", detail);
         
         return "product/detail";

@@ -66,7 +66,6 @@ public class AdminProductController extends BaseController {
         if (editMode) {
             long id = parameter.getProductId();
             ProductDto existProduct = productService.getById(id);
-            System.out.println(existProduct);
             if (existProduct == null) {
                 // error 처리
                 model.addAttribute("message", "상품정보가 존재하지 않습니다.");

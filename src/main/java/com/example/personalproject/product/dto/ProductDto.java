@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 public class ProductDto {
 	Long productId;
 	long categoryId;
-	String ProductName;
 	String imagePath;
 	String keyword;
 	String productName;
@@ -29,7 +28,6 @@ public class ProductDto {
 
 	String filename;
 	String urlFilename;
-
 	//추가컬럼
 	long totalCount;
 	long seq;
@@ -41,7 +39,6 @@ public class ProductDto {
 			.productName(product.getProductName())
 			.imagePath(product.getImagePath())
 			.keyword(product.getKeyword())
-			.productName(product.getProductName())
 			.summary(product.getSummary())
 			.contents(product.getContents())
 			.price(product.getPrice())
@@ -61,7 +58,7 @@ public class ProductDto {
 
 		List<ProductDto> productList = new ArrayList<>();
 		for (Product x : productDtoList) {
-            productList.add(ProductDto.of(x));
+			productList.add(ProductDto.of(x));
 		}
 		return productList;
 	}

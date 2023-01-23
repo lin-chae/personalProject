@@ -136,10 +136,10 @@
                 <p th:text="${x.regDtText}">2023.01.01</p>
             </td>
             <td>
-                <p th:text="${x.getSubject()}">강좌명 </p>
+                <p th:text="${x.getProductName()}">상품명 </p>
             </td>
             <td>
-                <p th:text="${x.getEmail}"></p>
+                <p th:text="${x.get}"></p>
             </td>
             <td>
                 <p th:text="${x.getUserName()}"></p>
@@ -148,15 +148,14 @@
                 <p th:text="${x.getPhoneNumber()}"></p>
             </td>
             <td>
-                <p th:if="${x.getOrderStatus() eq 'REQ'}">수강신청</p>
+                <p th:if="${x.getOrderStatus() eq 'REQ'}">장바구니</p>
                 <p th:if="${x.getOrderStatus() eq 'COMPLETE'}">결재완료</p>
-                <p th:if="${x.getOrderStatus() eq 'CANCEL'}">수강취소</p>
             </td>
             <td>
                 <div class="row-buttons" th:if="${x.getOrderStatus() eq 'REQ'}">
                     <input type="hidden" name="id" th:value="${x.getProductId()}"/>
                     <button value="COMPLETE" type="button">결재완료 처리</button>
-                    <button value="CANCEL" type="button">수강취소 처리</button>
+                    <button value="CANCEL" type="button">상품 취소 처리</button>
                 </div>
             </td>
         </tr>

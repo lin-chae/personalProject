@@ -62,23 +62,13 @@ public class CartServiceImpl implements CartService {
         
         return new ServiceResult(true);
     }
-    
-    @Override
-    public List<CartDto> myProduct(long userId) {
-        
-        /*CartParam parameter = new CartParam();
-        parameter.setUserId(userId);
-        List<CartDto> list = cartMapper.selectListMyProduct(parameter);
-        
-        return list;*/
-		return null;
-    }
+
     
     @Override
     public ServiceResult cancel(long cartId) {
     
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (!optionalCart.isPresent()) {
+        if (optionalCart.isEmpty()) {
             return new ServiceResult(false, "상품 정보가 존재하지 않습니다.");
         }
         

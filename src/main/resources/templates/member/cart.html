@@ -110,20 +110,20 @@
                 <tr th:each="x, i: ${list}">
                     <td th:text="${i.index + 1}">1</td>
                     <td>
-                        <p th:text="${x.regDtText}">2021.01.01</p>
+                        <p th:text="${x.getRegDt()}">2021.01.01</p>
                     </td>
                     <td>
-                        <p th:text="${x.subject}">강좌명 </p>
+                        <p th:text="${x.getProductName()}">강좌명 </p>
                     </td>
 
                     <td>
-                        <p th:if="${x.status eq 'REQ'}">수강신청</p>
-                        <p th:if="${x.status eq 'COMPLETE'}">결재완료</p>
-                        <p th:if="${x.status eq 'CANCEL'}">수강취소</p>
+                        <p th:if="${x.getOrderStatus() eq T(com.example.personalproject.product.model.OrderStatus).REQ}">결제 대기</p>
+                        <p th:if="${x.getOrderStatus() eq 'COMPLETE'}">결재완료</p>
+                        <p th:if="${x.getOrderStatus() eq 'CANCEL'}">장바구니에서 삭제</p>
                     </td>
                     <td>
-                        <div class="row-buttons" th:if="${x.status eq 'REQ'}">
-                            <button type="button" th:value="${x.id}">수강취소 처리</button>
+                        <div class="row-buttons" th:if="${x.getOrderStatus() eq 'REQ'}">
+                            <button type="button" th:value="${x.getCartId()}">장바구니 삭제</button>
                         </div>
                     </td>
 

@@ -1,14 +1,12 @@
 package com.example.personalproject.member.controller;
 
 import com.example.personalproject.member.ServiceResult;
-import com.example.personalproject.member.entity.Member;
+import com.example.personalproject.member.dto.MemberDto;
 import com.example.personalproject.member.model.MemberInput;
 import com.example.personalproject.member.model.ResetPasswordInput;
 import com.example.personalproject.member.repository.MemberRepository;
 import com.example.personalproject.member.service.MemberService;
-import com.example.personalproject.member.dto.MemberDto;
 import com.example.personalproject.product.dto.CartDto;
-import com.example.personalproject.product.repository.CartRepository;
 import com.example.personalproject.product.service.CartService;
 import java.security.Principal;
 import java.util.List;
@@ -183,8 +181,8 @@ public class MemberController {
 	@GetMapping("/cart")
 	public String memberCart(Model model, Principal principal) {
 
-		long userId = memberRepository.findByEmail(principal.getName()).get().getUserId();
-		List<CartDto> list = cartService.myProduct(userId);
+		List<CartDto> list = memberRepository.findByEmail(principal.getName()).get().getCartList()
+			.stream().map(CartDto::of).toList();
 
 		model.addAttribute("list", list);
 

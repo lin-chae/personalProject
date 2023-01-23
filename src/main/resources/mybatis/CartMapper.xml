@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personalproject.product.mapper.CartMapper">
+
+    <sql id="selectListWhere">
+
+        <if test="searchProductId > 0">
+            and p.id = #{searchProductId}
+        </if>
+
+    </sql>
+
+    <select id="selectListCount" resultType="long">
+        select count(*)
+        from cart c
+            join product p on c.product_id = p.product_id
+            join member m on c.user_id = m.user_id
+        where 1 = 1
+        <include refid="selectListWhere"/>
+    </select>
+
+    <select id="selectList" resultType="com.example.personalproject.product.dto.CartDto">
+        select c.*
+            , p.product_name
+            , m.name
+            , m.phone_number
+        from cart c
+            join product p on c.product_id = p.product_id
+            join member m on c.user_id = m.user_id
+        where 1 = 1
+            <include refid="selectListWhere"/>
+        order by reg_dt desc
+        limit #{pageStart}, #{pageEnd}
+    </select>
+
+    <!-- userId에 해당하는 수강신청 정보 -->
+    <select id="selectListMyProduct" resultType="com.example.personalproject.product.dto.CartDto">
+        select c.*
+            , p.product_name
+        from cart c
+            join product p on c.product_id = p.product_id
+        where c.user_id = #{userId}
+        order by reg_dt desc
+
+    </select>
+
+</mapper>

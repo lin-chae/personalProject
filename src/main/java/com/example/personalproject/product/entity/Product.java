@@ -21,27 +21,27 @@ import lombok.NoArgsConstructor;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long productId;
-    
-    long categoryId;
-    
-    String imagePath;
-    String keyword;
-    String productName;
+    private Long productId;
+
+    private long categoryId;
+
+    private String imagePath;
+    private String keyword;
+    private String productName;
     
     @Column(length = 1000)
-    String summary;
+    private String summary;
     
     @Lob
-    String contents;
-    long price;
-    long productQuantity;
-    
-    LocalDateTime regDt;//등록일(추가날짜)
-    LocalDateTime udtDt;//수정일(수정날짜)
-    
-    
-    String filename;
-    String urlFilename;
+    private String contents;
+    private long price;
+    private long productQuantity;
+
+    private LocalDateTime regDt;//등록일(추가날짜)
+    private LocalDateTime udtDt;//수정일(수정날짜)
+
+
+    private String filename;
+    private String urlFilename;
     
 }

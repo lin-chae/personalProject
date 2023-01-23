@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class CartInput {
 
-    long ProductId;
-    String email;
+    long productId;
+    long userId;
 
-    
-    long putProductId;
+    long selectedQuantity;
+    long cartId;
 }
